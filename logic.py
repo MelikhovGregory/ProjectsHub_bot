@@ -2,7 +2,7 @@ import sqlite3
 from config import DATABASE
 
 skills = [ (_,) for _ in (['Python', 'SQL', 'API', 'Telegram'])]
-statuses = [ (_,) for _ in (['At the design stage.', 'Under development.', 'Developed. Ready to use.', 'Updated.', 'Completed. Not supported.'])]
+statuses = [ (_,) for _ in (['На этапе проектирования', 'В процессе разработки', 'Разработан. Готов к использованию.', 'Обновлен', 'Завершен. Не поддерживается'])]
 
 class DB_Manager:
     def __init__(self, database):
@@ -35,7 +35,7 @@ class DB_Manager:
                             status_name TEXT
                         )''')
             conn.commit()
-        print("The database has been created successfully.")
+        print("База данных успешно создана.")
 
     def __executemany(self, sql, data):
         conn = sqlite3.connect(self.database)
@@ -126,4 +126,5 @@ if __name__ == '__main__':
     manager = DB_Manager(DATABASE)
     manager.create_tables()
     manager.default_insert()
+
 
