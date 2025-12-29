@@ -1,2 +1,2 @@
-DATABASE = ""
+DATABASE = "projects.db"
 TOKEN = ""
