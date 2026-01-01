@@ -12,7 +12,7 @@ def cansel(message):
     bot.send_message(message.chat.id, "Чтобы посмотреть команды, используй - /info", reply_markup=hideBoard)
   
 def no_projects(message):
-    bot.send_message(message.chat.id, 'У тебя пока нет проектов!\nМожешь добавить их с помошью команды /new_project')
+    bot.send_message(message.chat.id, "У тебя пока нет проектов!\nМожешь добавить их с помошью команды /new_project")
 
 def gen_inline_markup(rows):
     markup = InlineKeyboardMarkup()
@@ -29,7 +29,7 @@ def gen_markup(rows):
     markup.add(KeyboardButton(cancel_button))
     return markup
 
-attributes_of_projects = {'Имя проекта' : ["Введите новое имя проекта", "project_name"],
+attributes_of_projects = {"Имя проекта" : ["Введите новое имя проекта", "project_name"],
                           "Описание" : ["Введите новое описание проекта", "description"],
                           "Ссылка" : ["Введите новую ссылку на проект", "url"],
                           "Статус" : ["Выберите новый статус задачи", "status_id"]}
@@ -38,7 +38,7 @@ def info_project(message, user_id, project_name):
     info = manager.get_project_info(user_id, project_name)[0]
     skills = manager.get_project_skills(project_name)
     if not skills:
-        skills = 'Навыки пока не добавлены'
+        skills = "Навыки пока не добавлены"
     bot.send_message(message.chat.id, f"""Project name: {info[0]}
 Description: {info[1]}
 Link: {info[2]}
@@ -108,7 +108,7 @@ def skill_handler(message):
     projects = manager.get_projects(user_id)
     if projects:
         projects = [x[2] for x in projects]
-        bot.send_message(message.chat.id, 'Выбери проект для которого нужно выбрать навык', reply_markup=gen_markup(projects))
+        bot.send_message(message.chat.id, "Выбери проект для которого нужно выбрать навык", reply_markup=gen_markup(projects))
         bot.register_next_step_handler(message, skill_project, projects=projects)
     else:
         no_projects(message)
@@ -121,11 +121,11 @@ def skill_project(message, projects):
         return
         
     if project_name not in projects:
-        bot.send_message(message.chat.id, 'У тебя нет такого проекта, попробуй еще раз!) Выбери проект для которого нужно выбрать навык', reply_markup=gen_markup(projects))
+        bot.send_message(message.chat.id, "У тебя нет такого проекта, попробуй еще раз!) Выбери проект для которого нужно выбрать навык", reply_markup=gen_markup(projects))
         bot.register_next_step_handler(message, skill_project, projects=projects)
     else:
         skills = [x[1] for x in manager.get_skills()]
-        bot.send_message(message.chat.id, 'Выбери навык', reply_markup=gen_markup(skills))
+        bot.send_message(message.chat.id, "Выбери навык", reply_markup=gen_markup(skills))
         bot.register_next_step_handler(message, set_skill, project_name=project_name, skills=skills)
 
 def set_skill(message, project_name, skills):
@@ -136,11 +136,11 @@ def set_skill(message, project_name, skills):
         return
         
     if skill not in skills:
-        bot.send_message(message.chat.id, 'Видимо, ты выбрал навык. не из спика, попробуй еще раз!) Выбери навык', reply_markup=gen_markup(skills))
+        bot.send_message(message.chat.id, "Видимо, ты выбрал навык. не из спика, попробуй еще раз!) Выбери навык", reply_markup=gen_markup(skills))
         bot.register_next_step_handler(message, set_skill, project_name=project_name, skills=skills)
         return
     manager.insert_skill(user_id, project_name, skill )
-    bot.send_message(message.chat.id, f'Навык {skill} добавлен проекту {project_name}')
+    bot.send_message(message.chat.id, f"Навык {skill} добавлен проекту {project_name}")
 
 
 @bot.message_handler(commands=['projects'])
@@ -179,12 +179,12 @@ def delete_project(message, projects):
         cansel(message)
         return
     if project not in projects:
-        bot.send_message(message.chat.id, 'У тебя нет такого проекта, попробуй выбрать еще раз!', reply_markup=gen_markup(projects))
+        bot.send_message(message.chat.id, "У тебя нет такого проекта, попробуй выбрать еще раз!", reply_markup=gen_markup(projects))
         bot.register_next_step_handler(message, delete_project, projects=projects)
         return
     project_id = manager.get_project_id(project, user_id)
     manager.delete_project(user_id, project_id)
-    bot.send_message(message.chat.id, f'Проект {project} удален!')
+    bot.send_message(message.chat.id, f"Проект {project} удален!")
 
 
 @bot.message_handler(commands=['update_projects'])
